@@ -27,3 +27,8 @@
 /// @brief Representación de datos en binario fijo (std::bitset).
 /// @note Útil para operaciones a bajo nivel como manipulación de bits, flags o codificación binaria.
 #include <bitset>
+#include <functional> 
+#include <stdexcept>
+#include <random>
+#include <mutex>
+#include <array>

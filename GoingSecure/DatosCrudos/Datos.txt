@@ -1,0 +1,7 @@
+Nombre: Saul Eduardo GV
+Proyecto: Cifrado y Seguridad
+Mensaje: Despite Everything it´s still you
+Clave de acceso: PoppyQueen89
+
+Este archivo será cifrado usando el algoritmo Vigenere.
+Al finalizar, se generará una copia descifrada.
