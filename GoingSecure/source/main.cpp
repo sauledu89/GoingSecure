@@ -1,13 +1,12 @@
-﻿﻿/**
+﻿/**
  * @file main.cpp
  * @brief Entrada principal para cifrado y descifrado de archivos de texto.
  *
  * Este archivo contiene un menú básico que permite al usuario:
- *  - Seleccionar un archivo .txt de entrada
+ *  - Seleccionar un archivo .txt de entrada desde una carpeta preestablecida
  *  - Elegir una operación: cifrar o descifrar
  *  - Seleccionar un algoritmo: César, XOR, Vigenere, DES
  *  - Escribir una clave y procesar el archivo
- *
  */
 
 #include "../include/Prerequisites.h"
@@ -17,13 +16,60 @@
 #include "../include/DES.h"
 #include "../include/KeyGenerator.h"
 #include "../include/utils.h"
-#include <fstream>    // para ifstream, ofstream
-#include <sstream>    // para ostringstream
+
+#include <fstream>
+#include <sstream>
 #include <iostream>
-#include <bitset> void procesarArchivo();
+#include <bitset>
+#include <vector>
+#include <string>
+#include <io.h>
+#include <direct.h>
+#include <cstdlib>
+
+ // -------- FUNCIONES AUXILIARES --------
+std::vector<std::string> listarArchivos(const std::string& carpeta) {
+    std::vector<std::string> archivos;
+    struct _finddata_t file;
+    intptr_t handle;
+
+    std::string filtro = carpeta + "\\*.txt";
+    handle = _findfirst(filtro.c_str(), &file);
+    if (handle == -1) return archivos;
+
+    do {
+        archivos.push_back(file.name);
+    } while (_findnext(handle, &file) == 0);
+
+    _findclose(handle);
+    return archivos;
+}
+
+std::string seleccionarArchivoDesdeCarpeta(const std::string& carpeta) {
+    std::vector<std::string> archivos = listarArchivos(carpeta);
+    if (archivos.empty()) {
+        std::cout << "No se encontraron archivos .txt en la carpeta.\n";
+        return "";
+    }
+
+    std::cout << "\nArchivos disponibles:\n";
+    for (size_t i = 0; i < archivos.size(); ++i) {
+        std::cout << "[" << i + 1 << "] " << archivos[i] << "\n";
+    }
+
+    int seleccion = 0;
+    do {
+        std::cout << "Seleccione un archivo por numero: ";
+        std::cin >> seleccion;
+    } while (seleccion < 1 || seleccion > archivos.size());
+
+    return carpeta + "\\" + archivos[seleccion - 1];
+}
+
+// -------- PROGRAMA PRINCIPAL --------
+void procesarArchivo();
 
 int main() {
-    // Solo esta función queda activa para entrega del examen
     procesarArchivo();
     return 0;
 }
@@ -31,12 +77,16 @@ int main() {
 void procesarArchivo() {
     std::cout << "\n--- Cifrado/Descifrado de Archivos ---\n";
 
-    std::string rutaEntrada, rutaSalida;
-    std::cout << "Ruta del archivo de entrada: ";
-    std::getline(std::cin, rutaEntrada);
+    // Selección desde carpeta DatosCrudos
+    std::string rutaEntrada = seleccionarArchivoDesdeCarpeta("DatosCrudos");
+    if (rutaEntrada.empty()) return;
 
-    std::cout << "Ruta del archivo de salida: ";
-    std::getline(std::cin, rutaSalida);
+    // Crear carpeta de salida si no existe
+    _mkdir("DatosCif");
+
+    // Selección desde carpeta DatosCif
+    std::string rutaSalida = seleccionarArchivoDesdeCarpeta("DatosCif");
+    if (rutaSalida.empty()) return;
 
     std::cout << "Operacion: [1] Cifrar  [2] Descifrar: ";
     int operacion;
@@ -97,8 +147,7 @@ void procesarArchivo() {
         std::bitset<64> keyBits = stringToBitset(clave);
         DES des(keyBits);
 
-        // Solo se procesa el primer bloque (64 bits = 8 caracteres)
-        std::string bloque = contenido.substr(0, 8);
+        std::string bloque = contenido.substr(0, 8); // solo primer bloque
         std::bitset<64> dataBits = stringToBitset(bloque);
 
         std::bitset<64> resultadoBits = (operacion == 1)
@@ -124,9 +173,3 @@ void procesarArchivo() {
 
     std::cout << "Operacion completada y archivo guardado en: " << rutaSalida << "\n";
 }
-
-/**
- * NOTA:
- * Las funciones extra como testCesar(), testXorEncoder(), testCryptoGenerator(), etc.
- * se han comentado o eliminado del flujo para evitar errores y entregar solo lo requerido.
- */

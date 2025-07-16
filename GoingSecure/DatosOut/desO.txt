@@ -1,0 +1,8 @@
+Nombre: George Kusunoki Miller
+Proyecto: Cifrado y Seguridad
+Mensaje: Run away from yourself before it’s too late
+Clave de acceso: Joji1992
+
+Este archivo será cifrado usando el algoritmo XOR.
+Al finalizar, se generará una copia descifrada.
+

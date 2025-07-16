@@ -1,0 +1,7 @@
+Nombre: Gustavo Adrián Cerati Clarke
+Proyecto: Cifrado y Seguridad
+Mensaje: El silencio no es tiempo perdido, es tiempo que nos pertenece
+Clave de acceso: Cerati88
+
+Este archivo será cifrado usando el algoritmo DES.
+Al finalizar, se generará una copia descifrada.

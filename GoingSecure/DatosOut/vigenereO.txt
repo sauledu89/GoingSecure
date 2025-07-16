@@ -1,0 +1,7 @@
+Nombre: Moriah Rose Pereira
+Proyecto: Cifrado y Seguridad
+Mensaje: Don’t be afraid to disappear, the world will keep turning
+Clave de acceso: PoppyQueen89
+
+Este archivo será cifrado usando el algoritmo Vigenere.
+Al finalizar, se generará una copia descifrada.
